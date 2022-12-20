@@ -1,0 +1,13 @@
+.buttonsWrap {
+  display: flex;
+  gap: 15px;
+}
+.button {
+  padding: 3px;
+  min-width: 50px;
+}
+.button:hover {
+  background-color: azure;
+  border: 1px solid aqua;
+  cursor: pointer;
+}

@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import { FeedbackOptions } from './FeedbackOption/FeedbackOptions';
 import { Statistics } from './Statistics/Statistics';
+import { Notification } from './Notification/Notification';
+import { Section } from './Section/Section';
 
 export class App extends Component {
   state = {
@@ -8,11 +10,13 @@ export class App extends Component {
     neutral: 0,
     bad: 0,
   };
+
   onLeaveFeedback = feedback => {
     this.setState(prevState => ({
       [feedback]: prevState[feedback] + 1,
     }));
   };
+
   countTotalFeedback = () => {
     return this.state.good + this.state.neutral + this.state.bad;
   };
@@ -20,27 +24,32 @@ export class App extends Component {
   countPositiveFeedbackPercentage = total => {
     return total ? Math.ceil((this.state.good / total) * 100) : 0;
   };
-  //  handleIncrement = () => {
-  //   this.setState(prevState => {
-  //     return { value: prevState.value + 1 };
-  //   });
 
   render() {
+    const state = this.state;
     const total = this.countTotalFeedback();
     const positivePercentage = this.countPositiveFeedbackPercentage(total);
     return (
       <>
-        <FeedbackOptions
-          options={this.state}
-          onLeaveFeedback={this.onLeaveFeedback}
-        />
-        <Statistics
-          good={this.state.good}
-          neutral={this.state.neutral}
-          bad={this.state.bad}
-          total={total}
-          positivePercentage={positivePercentage}
-        />
+        <Section title="Please leave feedback">
+          <FeedbackOptions
+            options={state}
+            onLeaveFeedback={this.onLeaveFeedback}
+          />
+        </Section>
+        <Section title="Statistics">
+          {total ? (
+            <Statistics
+              good={state.good}
+              neutral={state.neutral}
+              bad={state.bad}
+              total={total}
+              positivePercentage={positivePercentage}
+            />
+          ) : (
+            <Notification message="There is no feedback" />
+          )}
+        </Section>
       </>
     );
   }
